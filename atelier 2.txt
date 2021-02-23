@@ -1,0 +1,92 @@
+1/ Sélectionnez le nom de famille de tous les employés.
+   SELECT LastName FROM Employees;
+
+2/Sélectionnez le nom de famille de tous les employés, sans doublons.
+  SELECT DISTINCT LastName FROM Employees;
+
+3/Sélectionnez toutes les données des employés dont le nom de famille est « Smith ».
+ SELECT * FROM Employees WHERE LastName = 'Smith';
+
+4/Sélectionnez toutes les données des employés dont le nom de famille est « Smith » ou « Doe ».
+SELECT * FROM Employees
+WHERE LastName = 'Smith' OR LastName = 'Doe';
+
+5/Sélectionnez toutes les données des employés qui travaillent dans le département 14.
+SELECT * FROM Employees WHERE Department = 14;
+
+6/Sélectionnez toutes les données des employés qui travaillent dans le département 37 ou le département 77.
+SELECT * FROM Employees
+WHERE Department = 37 OR Department = 77;
+
+7/Sélectionnez toutes les données des employés dont le nom de famille commence par un « S ».
+SELECT * FROM Employees
+WHERE LastName LIKE 'S%';
+
+8/Sélectionnez la somme de tous les budgets des ministères.
+SELECT SUM(Budget) FROM Departments;
+
+9/Sélectionnez le nombre d’employés dans chaque département 
+(vous n’avez qu’à afficher le code département et le nombre d’employés).
+SELECT Department, COUNT(*) FROM Employees GROUP BY Department;
+
+10/Sélectionnez toutes les données des employés, y compris les données de chaque employé.
+SELECT * FROM Employees x INNER JOIN Departments y ON x.Department = y.Code;
+
+11/Sélectionnez le nom et le nom de famille de chaque employé, 
+ainsi que le nom et le budget du service de l’employé.
+SELECT Employees.Name, LastName, Departments.Name AS DepartmentsName, Budget
+  FROM Employees INNER JOIN Departments
+  ON Employees.Department = Departments.Code;
+
+12/Choisissez le nom et le nom de famille des employés
+ travaillant pour des ministères dont le budget est supérieur à 60 000 $.
+SELECT Name, LastName FROM Employees
+  WHERE Department IN
+  (SELECT Code FROM Departments WHERE Budget > 60000);
+
+13/choisissez les ministères dont le budget est supérieur au budget moyen de tous les ministères.
+SELECT * FROM Departments WHERE Budget > (SELECT AVG(Budget) FROM Departments);
+
+14/Sélectionnez les noms des ministères de plus de deux employés.
+SELECT D.Name FROM Departments D 
+WHERE 2 < (SELECT COUNT(*) FROM Employees WHERE Department = D.Code);
+
+15/Choisissez le nom et le nom de famille des employés travaillant pour des ministères dont 
+le budget est le plus bas.
+SELECT x.Name, x.LastName
+FROM Employees x 
+WHERE x.Department = (SELECT y.Code FROM (SELECT * FROM Departments d ORDER BY d.budget LIMIT 2) 
+y ORDER BY budget DESC LIMIT 1)
+
+16/Ajouter un nouveau ministère appelé « Assurance de la qualité »,
+ avec un budget de 40 000 $ et le code ministériel 11. 
+Ajoutez un employé appelé « Mary Moore » dans ce département, avec SSN 847-21-9811.
+INSERT INTO Departments
+VALUES ( 11 , 'Quality Assurance' , 40000);
+INSERT INTO Employees
+VALUES ( '847219811' , 'Mary' , 'Moore' , 11);
+
+17/ Réduire le budget de tous les ministères de 10 %.
+UPDATE Departments SET Budget = Budget * 0.9;
+
+18/Réaffecter tous les employés du département de recherche (code 77) 
+au service informatique (code 14).
+UPDATE Employees SET Department = 14 WHERE Department = 77;
+
+19/Supprimer de la table tous les employés du service informatique (code 14).
+DELETE FROM Employees WHERE Department = 14;
+
+20/Supprimer de la table tous les employés qui travaillent 
+dans des ministères dont le budget est supérieur ou égal à 60 000 $.
+DELETE FROM Employees WHERE Department IN (SELECT Code FROM Departments WHERE Budget >= 60000);
+
+21/Supprimer de la table tous les employés.
+DELETE FROM Employees;
+
+
+
+
+
+
+
+
